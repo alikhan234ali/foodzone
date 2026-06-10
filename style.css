@@ -1530,8 +1530,9 @@ body.popup-open {
   }
 
   .search {
-    flex: 1;
-    min-width: 0;
+    width: 100%;
+    order: 3;
+    flex-wrap: wrap;
   }
 
   .search input {
