@@ -1572,7 +1572,7 @@ body.popup-open {
 
 /* Small mobile phones ke liye - 480px se neeche
    Logo chhota, hero heading chhoti, cards full width,
-   popup single column, buttons stack */
+   popup single column, cart dropdown center, buttons stack */
 @media (max-width: 480px) {
   .logo {
     font-size: 1.4rem;
@@ -1585,6 +1585,15 @@ body.popup-open {
   .card {
     width: 100%;
     max-width: 320px;
+  }
+
+  /* Cart dropdown mobile pe center mein aata hai */
+  .cart-dropdown {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90vw;
+    max-width: 340px;
   }
 
   .popup-grid {
