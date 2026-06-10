@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop.com</title>
+  <!-- Font Awesome icons ka CDN link - is se hum icons use kar sakte hain -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Humari custom CSS file jo design karti hai sab kuch -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============================================
+       HEADER SECTION - Ye page ka top navbar hai
+       Is mein: Logo, Navigation links, Search bar, 
+       Shopping cart icon aur Mobile menu button hai
+       ============================================ -->
+  <header class="header">
+    <!-- Shop.com ka logo - click karne pe home pe jata hai -->
+    <a href="#home" class="logo">Shop.com</a>
+
+    <!-- Navigation links - Home, Menu, Sale, Contact -->
+    <nav class="nav" id="nav">
+      <ul>
+        <li><a href="#home" class="active">Home</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#sale">Sale</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- Search bar - products ko search karne ke liye -->
+    <div class="search">
+      <input type="search" id="searchInput" placeholder="Search products...">
+      <button type="button" id="searchBtn">Search</button>
+    </div>
+
+    <!-- ============================================
+         SHOPPING CART - Cart icon aur dropdown
+         Cart icon pe click karne se dropdown khulta hai
+         Jis mein: items, promo code, total, buy now
+         ============================================ -->
+    <div class="cart-wrapper">
+      <!-- Cart icon with badge (badge mein kitne items hain wo dikhta hai) -->
+      <div class="cart-icon" id="cartIcon" title="Shopping Cart">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </div>
+
+      <!-- Cart dropdown - jab cart icon pe click ho tab dikhta hai -->
+      <div class="cart-dropdown hidden" id="cartDropdown">
+        <h3>Your Cart</h3>
+        <!-- Yahan cart ke items dynamically JS se aate hain -->
+        <div id="cartItems" class="cart-items">
+          <p class="cart-empty">Your cart is empty.</p>
+        </div>
+        <!-- Promo code section - discount code lagane ke liye (SHOP30 = 30% off) -->
+        <div class="cart-promo">
+          <input type="text" id="promoInput" placeholder="Enter promo code" class="promo-input">
+          <button type="button" class="promo-btn" id="promoBtn">Apply</button>
+        </div>
+        <!-- Promo message - success ya error dikhata hai -->
+        <p class="promo-message hidden" id="promoMessage"></p>
+        <!-- Total amount yahan dikhta hai -->
+        <div class="cart-total" id="cartTotal"></div>
+        <!-- Buy Now button - order place karta hai -->
+        <button type="button" class="cart-buy-btn" id="cartBuyBtn">Buy Now</button>
+      </div>
+    </div>
+
+    <!-- Mobile menu toggle button - sirf small screens pe dikhta hai -->
+    <button type="button" class="menu-toggle" id="menuToggle" aria-label="Menu">
+      <i class="fas fa-bars"></i>
+    </button>
+  </header>
+
+  <!-- ============================================
+       HERO SECTION - Page ka pehla bada section
+       Welcome message aur "Shop Now" button hai
+       ============================================ -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1>Welcome to Shop.com</h1>
+      <p>Discover premium drinks, delicious food, and the best deals in town. Fresh quality, great taste, and fast service — everything you need in one place.</p>
+      <!-- Shop Now button - discount popup dikhata hai -->
+      <button type="button" class="hero-btn sale-shop-btn" id="saleShopBtn">Shop Now</button>
+    </div>
+  </section>
+
+  <!-- ============================================
+       DRINKS BANNER - Menu section ka heading
+       ============================================ -->
+  <section class="drinks-banner" id="menu">
+    <h2>You may like one of our drinks:</h2>
+  </section>
+
+  <!-- ============================================
+       MENU SECTION - Products ka main section
+       Is mein 2 cheezein hain:
+       1. Category filters (All, Pastas, Burgers etc.)
+       2. Product cards grid (sab products dikhte hain)
+       Categories pe click karke filter kar sakte hain
+       ============================================ -->
+  <section class="menu-section">
+    <!-- Category filter buttons - kis category ke products dikhane hain -->
+    <div class="menu">
+      <ul id="categoryList">
+        <li><a href="#" class="cat-btn active" data-category="all">All</a></li>
+        <li><a href="#" class="cat-btn" data-category="Pastas">Pastas</a></li>
+        <li><a href="#" class="cat-btn" data-category="Burgers">Burgers</a></li>
+        <li><a href="#" class="cat-btn" data-category="Soups">Soups</a></li>
+        <li><a href="#" class="cat-btn" data-category="Salads">Salads</a></li>
+        <li><a href="#" class="cat-btn" data-category="Sandwich">Sandwich</a></li>
+        <li><a href="#" class="cat-btn" data-category="Cocktails">Cocktails</a></li>
+        <li><a href="#" class="cat-btn" data-category="Confectionery">Confectionery</a></li>
+        <li><a href="#" class="cat-btn" data-category="Soft drinks">Soft drinks</a></li>
+      </ul>
+    </div>
+
+    <!-- Products grid - saare product cards yahan JS se load hote hain -->
+    <div class="products" id="productGrid"></div>
+
+    <!-- Jab koi product na mile search mein to ye dikhta hai -->
+    <p id="noResults" class="no-results hidden">No products found. Try another search.</p>
+  </section>
+
+  <!-- ============================================
+       SALE SECTION - Discount wala section
+       Big Sale ka banner hai is mein
+       "Shop Now" button pe discount popup khulta hai
+       ============================================ -->
+  <section class="sale-section" id="sale">
+    <div class="sale-content">
+      <div class="sale-text">
+        <h2>Big Sale</h2>
+        <p>Don't miss our limited-time offers! Get up to 30% off on selected drinks and meals. Visit us today or order online and enjoy premium quality at unbeatable prices.</p>
+        <!-- Sale ka Shop Now button - discount popup dikhata hai -->
+        <button type="button" class="hero-btn sale-shop-btn-2">Shop Now</button>
+      </div>
+      <div class="sale-image">
+        <img src="../botal.png" alt="Special offer bottle">
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       CONTACT SECTION - Humari contact information
+       Is mein 2 cheezein hain:
+       1. Contact info (Location, Phone, Email, Hours)
+       2. Contact form (Name, Email, Subject, Message)
+       Footer ke navigation links yahan pe point karte hain
+       ============================================ -->
+  <section class="contact-section" id="contact">
+    <h2 class="contact-heading">Contact Us</h2>
+    <p class="contact-subheading">Have questions, suggestions, or just want to say hello? Reach out to us!</p>
+
+    <div class="contact-container">
+      <!-- Contact information - address, phone, email, timing -->
+      <div class="contact-info">
+        <div class="contact-info-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <div>
+            <h4>Location</h4>
+            <p>Pakistan</p>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <i class="fas fa-phone-alt"></i>
+          <div>
+            <h4>Phone</h4>
+            <p>+92 306 4382254</p>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <i class="fas fa-envelope"></i>
+          <div>
+            <h4>Email</h4>
+            <p>info@shop.com</p>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <i class="fas fa-clock"></i>
+          <div>
+            <h4>Working Hours</h4>
+            <p>Mon - Sat: 9:00 AM - 11:00 PM</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact form - message bhejne ke liye -->
+      <form class="contact-form" id="contactForm">
+        <input type="text" id="contactName" placeholder="Your Name" required>
+        <input type="email" id="contactEmail" placeholder="Your Email" required>
+        <input type="text" id="contactSubject" placeholder="Subject">
+        <textarea id="contactMessage" rows="5" placeholder="Your Message" required></textarea>
+        <button type="submit" class="contact-send-btn">
+          <i class="fas fa-paper-plane"></i> Send Message
+        </button>
+        <!-- Success message - form submit hone pe dikhta hai -->
+        <p class="contact-form-success hidden" id="contactFormSuccess">
+          <i class="fas fa-check-circle"></i> Message sent successfully! We'll get back to you soon.
+        </p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER SECTION - Page ka bottom part
+       Is mein: Logo description, Quick links, 
+       Contact info, Social media icons
+       ============================================ -->
+  <footer>
+    <div class="footer-container">
+      <!-- Company ka description -->
+      <div class="footer-box">
+        <h2>Shop.com</h2>
+        <p>We create modern, responsive and beautiful websites for your business growth.</p>
+      </div>
+
+      <!-- Quick navigation links -->
+      <div class="footer-box">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#sale">Sale</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact details -->
+      <div class="footer-box">
+        <h3>Contact</h3>
+        <p>Email: info@shop.com</p>
+        <p>Phone: +92 306 4382254</p>
+        <p>Location: Pakistan</p>
+      </div>
+
+      <!-- Social media links -->
+      <div class="footer-box">
+        <h3>Follow Us</h3>
+        <div class="social-icons">
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Copyright line -->
+    <div class="footer-bottom">
+      &copy; 2026 All Rights Reserved | ALI AHMAD
+    </div>
+  </footer>
+
+  <!-- ============================================
+       PRODUCT POPUP - Jab kisi product card pe click karo
+       Ye popup khulta hai product ki detail dikhata hai
+       Is mein: Image, Name, Rating, Price, Description,
+       Features, Quantity selector, Add to Cart, Buy Now
+       ============================================ -->
+  <div class="popup-overlay hidden" id="popupOverlay" aria-hidden="true">
+    <div class="popup" role="dialog" aria-modal="true" aria-labelledby="popupTitle">
+      <!-- Close button -->
+      <button type="button" class="popup-close" id="popupClose" aria-label="Close">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <div class="popup-grid">
+        <!-- Product ki bari image -->
+        <div class="popup-image-wrap">
+          <img id="popupImage" src="" alt="">
+          <!-- Category badge - jaise "Cocktails", "Burgers" -->
+          <span class="popup-badge" id="popupCategory"></span>
+        </div>
+
+        <!-- Product ki details -->
+        <div class="popup-details">
+          <!-- Product ka naam -->
+          <h2 id="popupTitle"></h2>
+          <!-- Star rating aur reviews ki tadaad -->
+          <div class="popup-rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+            <span id="popupRatingText">4.5 (120 reviews)</span>
+          </div>
+          <!-- Product ki qeemat -->
+          <p class="popup-price" id="popupPrice"></p>
+          <!-- Product ka description -->
+          <p class="popup-desc" id="popupDesc"></p>
+
+          <!-- Product ki features list - har category ki alag features hain -->
+          <ul class="popup-features" id="popupFeatures"></ul>
+
+          <!-- Quantity selector - kitne items chahiye (+ / - buttons) -->
+          <div class="popup-qty">
+            <span>Quantity:</span>
+            <button type="button" class="qty-btn" id="qtyMinus">&minus;</button>
+            <span id="qtyValue">1</span>
+            <button type="button" class="qty-btn" id="qtyPlus">+</button>
+          </div>
+
+          <!-- Add to Cart aur Buy Now buttons -->
+          <div class="popup-actions">
+            <button type="button" class="popup-btn-cart" id="popupAddCart">
+              <i class="fas fa-shopping-cart"></i> Add to Cart
+            </button>
+            <button type="button" class="popup-btn-buy" id="popupBuyNow">
+              Buy Now
+            </button>
+          </div>
+
+          <!-- Success message - item cart mein add hone pe dikhta hai -->
+          <p class="popup-success hidden" id="popupSuccess">
+            <i class="fas fa-check-circle"></i> Added to cart successfully!
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       ORDER CONFIRMATION MODAL - "Buy Now" ya cart 
+       ke "Buy Now" button pe click karne pe aata hai
+       Order place hone ke baad dikhta hai
+       Is mein: Success icon, order details (items list),
+       promo discount (agar ho), total, aur "Got it!" button
+       ============================================ -->
+  <div class="order-overlay hidden" id="orderOverlay">
+    <div class="order-modal">
+      <!-- Green checkmark icon - pulsing animation ke saath -->
+      <div class="order-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <h2 class="order-title">Order Placed!</h2>
+      <p class="order-subtitle">Thank you for shopping with Shop.com</p>
+      <!-- Order details - JS se items aur total yahan aata hai -->
+      <div class="order-details" id="orderDetails"></div>
+      <div class="order-divider"></div>
+      <p class="order-thankyou">Your order has been confirmed and will be delivered soon.</p>
+      <!-- Close button - modal ko band karta hai -->
+      <button type="button" class="order-close-btn" id="orderCloseBtn">
+        <i class="fas fa-thumbs-up"></i> Got it!
+      </button>
+    </div>
+  </div>
+
+  <!-- ============================================
+       DISCOUNT POPUP - Hero "Shop Now" ya Sale 
+       "Shop Now" button pe click karne pe aata hai
+       Special offer dikhata hai - 30% OFF
+       Promo code "SHOP30" batata hai
+       "Shop Now" button products pe le jata hai
+       ============================================ -->
+  <div class="discount-overlay hidden" id="discountOverlay">
+    <div class="discount-popup">
+      <!-- Close button -->
+      <button type="button" class="popup-close" id="discountClose">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="discount-content">
+        <!-- SPECIAL OFFER badge -->
+        <div class="discount-badge"><i class="fas fa-percentage"></i> SPECIAL OFFER</div>
+        <h2>30% OFF!</h2>
+        <p class="discount-desc">Get up to 30% discount on all selected drinks and meals. Limited time offer!</p>
+        <!-- Discount wale items ki list - purani aur nayi qeemat -->
+        <div class="discount-details">
+          <div class="discount-item">
+            <i class="fas fa-check-circle"></i>
+            <span>Premium Champagne &mdash; Rs. 3,150 <small>(was Rs. 4,500)</small></span>
+          </div>
+          <div class="discount-item">
+            <i class="fas fa-check-circle"></i>
+            <span>Classic Burger &mdash; Rs. 455 <small>(was Rs. 650)</small></span>
+          </div>
+          <div class="discount-item">
+            <i class="fas fa-check-circle"></i>
+            <span>Espresso Coffee &mdash; Rs. 245 <small>(was Rs. 350)</small></span>
+          </div>
+          <div class="discount-item">
+            <i class="fas fa-check-circle"></i>
+            <span>Mojito Cocktail &mdash; Rs. 420 <small>(was Rs. 600)</small></span>
+          </div>
+        </div>
+        <!-- Promo code info -->
+        <p class="discount-code">Use code: <strong>SHOP30</strong> at checkout</p>
+        <!-- Shop Now button - products section pe scroll karta hai -->
+        <button type="button" class="discount-btn" id="discountShopBtn">
+          <i class="fas fa-shopping-cart"></i> Shop Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main JavaScript file - saari functionality is mein hai -->
+  <script src="script.js"></script>
+</body>
+</html>
